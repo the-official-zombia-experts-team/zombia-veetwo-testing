@@ -12,7 +12,6 @@ const servers = {
 const eventEmitter = new EventEmitter();
 
 let bots = [];
-let autoReconnect = true; // this is enabled by default. you can change it to false if you dont want alts to auto reconnect by default
 
 
 class Player {
@@ -36,10 +35,7 @@ class Player {
     };
 
     onSockClose(e) {
-        if (autoReconnect) {
-            console.log("A socket closed. Attempting to reconnect.");
-            this.connect();
-        }; 
+        console.log("A socket closed.");
     };
 };
 
@@ -52,6 +48,11 @@ eventEmitter.on("createBot", (serverId) => {
     };
 });
 
+const fillServer = () => {
+    // TODO: finish this function
+    console.log("In development.");
+};
+
 const main = () => {
     console.clear(); // black lives matter, i needed to clear the console so that the program doesn't look bad in the terminal
     console.log("Greetings, user. Welcome to VeeTwo, a zombia script by qtDz/the zombia experts. This tool has many features for advanced professional zombia gameplay.");
@@ -60,20 +61,42 @@ const main = () => {
         ${util.styleText(["green", "bold"], "Current Number Of Bots: " + bots.length.toString())}
 
         Options:
-    1. Send a bot to a server.
-    2. Check all-time leaderboard
-    3. Scan servers
-    4. Fill a server
+    1. Send a bot to a server
+    2. Remove one bot
+    3. Check all-time leaderboard
+    4. Scan servers (TODO)
+    5. Fill a server (TODO)
     `);
     let choice = parseInt(readline.question("Your choice? >> "));
 
     switch (choice) {
         case 1:
-        // send bot to a server 
+            // send bot to a server 
             let serverChoice = readline.question("There are four servers which you can send a bot to.\n\
 v1001, v1002, v3001, v3002\n\
 Which server do you choose? >> ");
             eventEmitter.emit("createBot", serverChoice);
+            break;
+
+        case 2:
+            // remove a bot
+            bots[0].close();
+            bots.shift();
+            main();
+            break;
+
+        case 3:
+            // check all-time leaderboard
+            let waveOrScore = readline.question("Would you like to check the wave lb or score lb? (input wave or score) >> ");
+            fetch(`http://zombia.io/leaderboard/data?category=${waveOrScore}&time=all&gameMode=standard`)
+                .then(response => response.json())
+                .then((response) => {
+                    for (i in response) {
+                        console.log(`#${Number(i) + 1}, Wave: ${response[i].wave}, Score: ${response[i].score}, Players: <${response[i].players.toString()}>`);
+                    };
+                    readline.question("Press enter to continue.");
+                    main();
+                });
             break;
 
         default:
@@ -83,4 +106,3 @@ Which server do you choose? >> ");
 };
 
 main();
- 
