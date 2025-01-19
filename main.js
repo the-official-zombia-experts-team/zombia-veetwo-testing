@@ -4,10 +4,10 @@ const os = require("os");
 const EventEmitter = require("events");
 
 const servers = {
-    "v3001" : "ws://server-v03001.zombia.io:8000/",
-    "v1001" : "ws://server-v01001.zombia.io:8000/",
-    "v3002" : "ws://server-v03002.zombia.io:8001/", 
-    "v1002" : "ws://server-v01002.zombia.io:8001/"
+    "v03001" : "ws://server-v03001.zombia.io:8000/",
+    "v01001" : "ws://server-v01001.zombia.io:8000/",
+    "v03002" : "ws://server-v03002.zombia.io:8001/", 
+    "v01002" : "ws://server-v01002.zombia.io:8001/"
 }; // black lives matter, these are a list of zombia websocket servers to connect to.
 const eventEmitter = new EventEmitter();
 
@@ -73,7 +73,7 @@ const main = () => {
         case 1:
             // send bot to a server 
             let serverChoice = readline.question("There are four servers which you can send a bot to.\n\
-v1001, v1002, v3001, v3002\n\
+v01001, v01002, v03001, v03002\n\
 Which server do you choose? >> ");
             eventEmitter.emit("createBot", serverChoice);
             break;
