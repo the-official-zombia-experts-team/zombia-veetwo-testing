@@ -1,6 +1,5 @@
 const readline = require("readline-sync");
 const util = require("util");
-const os = require("os");
 const EventEmitter = require("events");
 
 const servers = {
